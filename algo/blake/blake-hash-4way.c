@@ -1056,12 +1056,21 @@ blake32_4way_close( blake_4way_small_context *sc, unsigned ub, unsigned n,
 
    if ( ptr == 0 )
    {
-	sc->T0 = SPH_C32(0xFFFFFE00UL);
-	sc->T1 = SPH_C32(0xFFFFFFFFUL);
+#ifdef _MSC_VER
+      sc->T0 = SPH_C32(0xFFFFFE00);
+      sc->T1 = SPH_C32(0xFFFFFFFF);
+#else
+      sc->T0 = SPH_C32(0xFFFFFE00UL);
+      sc->T1 = SPH_C32(0xFFFFFFFFUL);
+#endif
    }
    else if ( sc->T0 == 0 )
    {
-	sc->T0 = SPH_C32(0xFFFFFE00UL) + bit_len;
+#ifdef _MSC_VER
+      sc->T0 = SPH_C32(0xFFFFFE00) + bit_len;
+#else
+      sc->T0 = SPH_C32(0xFFFFFE00UL) + bit_len;
+#endif
 	sc->T1 = SPH_T32(sc->T1 - 1);
    } 
    else
@@ -1081,14 +1090,19 @@ blake32_4way_close( blake_4way_small_context *sc, unsigned ub, unsigned n,
    {
 	memset_zero_128( buf + (ptr>>2) + 1, (60-ptr) >> 2 );
 	blake32_4way( sc, buf + (ptr>>2), 64 - ptr );
-	sc->T0 = SPH_C32(0xFFFFFE00UL);
-	sc->T1 = SPH_C32(0xFFFFFFFFUL);
-	memset_zero_128( buf, 56>>2 );
+#ifdef _MSC_VER
+    sc->T0 = SPH_C32(0xFFFFFE00);
+    sc->T1 = SPH_C32(0xFFFFFFFF);
+#else
+    sc->T0 = SPH_C32(0xFFFFFE00UL);
+    sc->T1 = SPH_C32(0xFFFFFFFFUL);
+#endif
+    memset_zero_128( buf, 56>>2 );
        if (out_size_w32 == 8)
            buf[52>>2] = _mm_set1_epi32( 0x01000000UL );
         *(buf+(56>>2)) = mm_bswap_32( _mm_set1_epi32( th ) );
         *(buf+(60>>2)) = mm_bswap_32( _mm_set1_epi32( tl ) );
-	blake32_4way( sc, buf, 64 );
+    blake32_4way( sc, buf, 64 );
    }
    out = (__m128i*)dst;
    for ( k = 0; k < out_size_w32; k++ )
@@ -1178,12 +1192,21 @@ blake32_8way_close( blake_8way_small_context *sc, unsigned ub, unsigned n,
 
    if ( ptr == 0 )
    {
-        sc->T0 = SPH_C32(0xFFFFFE00UL);
-        sc->T1 = SPH_C32(0xFFFFFFFFUL);
+#ifdef _MSC_VER
+      sc->T0 = SPH_C32(0xFFFFFE00);
+      sc->T1 = SPH_C32(0xFFFFFFFF);
+#else
+      sc->T0 = SPH_C32(0xFFFFFE00UL);
+      sc->T1 = SPH_C32(0xFFFFFFFFUL);
+#endif
    }
    else if ( sc->T0 == 0 )
    {
-        sc->T0 = SPH_C32(0xFFFFFE00UL) + bit_len;
+#ifdef _MSC_VER
+       sc->T0 = SPH_C32(0xFFFFFE00) + bit_len;
+#else
+      sc->T0 = SPH_C32(0xFFFFFE00UL) + bit_len;
+#endif
         sc->T1 = SPH_T32(sc->T1 - 1);
    }
    else
@@ -1203,8 +1226,13 @@ blake32_8way_close( blake_8way_small_context *sc, unsigned ub, unsigned n,
    {
         memset_zero_256( buf + (ptr>>2) + 1, (60-ptr) >> 2 );
         blake32_8way( sc, buf + (ptr>>2), 64 - ptr );
+#ifdef _MSC_VER
+        sc->T0 = SPH_C32(0xFFFFFE00);
+        sc->T1 = SPH_C32(0xFFFFFFFF);
+#else
         sc->T0 = SPH_C32(0xFFFFFE00UL);
         sc->T1 = SPH_C32(0xFFFFFFFFUL);
+#endif
         memset_zero_256( buf, 56>>2 );
        if ( out_size_w32 == 8 )
            buf[52>>2] = _mm256_set1_epi32( 0x01000000UL );
@@ -1301,13 +1329,22 @@ blake64_4way_close( blake_4way_big_context *sc,
    th = sc->T1;
    if (ptr == 0 )
    {
-	sc->T0 = SPH_C64(0xFFFFFFFFFFFFFC00ULL);
-	sc->T1 = SPH_C64(0xFFFFFFFFFFFFFFFFULL);
+#ifdef _MSC_VER
+       sc->T0 = SPH_C64(0xFFFFFFFFFFFFFC00);
+       sc->T1 = SPH_C64(0xFFFFFFFFFFFFFFFF);
+#else
+       sc->T0 = SPH_C64(0xFFFFFFFFFFFFFC00ULL);
+       sc->T1 = SPH_C64(0xFFFFFFFFFFFFFFFFULL);
+#endif
    }
    else if ( sc->T0 == 0 )
    {
-	sc->T0 = SPH_C64(0xFFFFFFFFFFFFFC00ULL) + bit_len;
-	sc->T1 = SPH_T64(sc->T1 - 1);
+#ifdef _MSC_VER
+      sc->T0 = SPH_C64(0xFFFFFFFFFFFFFC00) + bit_len;
+#else
+      sc->T0 = SPH_C64(0xFFFFFFFFFFFFFC00ULL) + bit_len;
+#endif
+      sc->T1 = SPH_T64(sc->T1 - 1);
    } 
    else
    {
@@ -1331,8 +1368,13 @@ blake64_4way_close( blake_4way_big_context *sc,
        memset_zero_256( buf + (ptr>>3) + 1, (120 - ptr) >> 3 );
 
        blake64_4way( sc, buf + (ptr>>3), 128 - ptr );
+#ifdef _MSC_VER
+       sc->T0 = SPH_C64(0xFFFFFFFFFFFFFC00);
+       sc->T1 = SPH_C64(0xFFFFFFFFFFFFFFFF);
+#else
        sc->T0 = SPH_C64(0xFFFFFFFFFFFFFC00ULL);
        sc->T1 = SPH_C64(0xFFFFFFFFFFFFFFFFULL);
+#endif
        memset_zero_256( buf, 112>>3 ); 
        if ( out_size_w64 == 8 )
            buf[104>>3] = _mm256_set1_epi64x( 0x0100000000000000ULL );

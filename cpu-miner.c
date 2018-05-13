@@ -3184,6 +3184,9 @@ int main(int argc, char *argv[])
 #endif
 	if (num_cpus < 1)
 		num_cpus = 1;
+#ifdef _DEBUG
+    num_cpus = 1;
+#endif
 
 	parse_cmdline(argc, argv);
 

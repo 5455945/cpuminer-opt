@@ -22,7 +22,17 @@
 #include <string.h>
 #include <stdio.h>
 #include <time.h>
+#ifdef _MSC_VER
+#include <intrin.h>
+#ifdef __SSE4_2__
+#pragma intrinsic(_mm_set_epi64x)
+#endif
+#ifdef __AVX2__
+#pragma intrinsic(_mm256_set_epi64x)
+#endif
+#else
 #include <immintrin.h>
+#endif
 #include "sponge.h"
 #include "lyra2.h"
 

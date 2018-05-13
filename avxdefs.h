@@ -49,7 +49,17 @@
 // needed.
 
 #include <inttypes.h>
+#ifdef WIN32
+#include <intrin.h>
+#ifdef __SSE4_2__
+#pragma intrinsic(_mm_set_epi64x)
+#endif
+#ifdef __AVX2__
+#pragma intrinsic(_mm256_set_epi64x)
+#endif
+#else
 #include <immintrin.h>
+#endif
 #include <memory.h>
 #include <stdbool.h>
 

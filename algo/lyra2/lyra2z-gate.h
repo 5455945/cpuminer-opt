@@ -8,7 +8,7 @@
   #define LYRA2Z_4WAY
 #endif
 #if defined(__AVX2__)
-//  #define LYRA2Z_8WAY
+  #define LYRA2Z_8WAY
 #endif
 
 

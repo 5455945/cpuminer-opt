@@ -5,7 +5,7 @@
 
 __thread uint64_t* lyra2z330_wholeMatrix;
 
-void lyra2z330_hash(void *state, const void *input, uint32_t height)
+void lyra2z330_hash(void *state, const void *input)
 {
 	uint32_t _ALIGN(256) hash[16];
 
@@ -18,8 +18,13 @@ void lyra2z330_hash(void *state, const void *input, uint32_t height)
 int scanhash_lyra2z330( int thr_id, struct work *work, uint32_t max_nonce,
                         uint64_t *hashes_done )
 {
+#ifdef _MSC_VER
+    uint32_t _ALIGN(64) hash[8];
+    uint32_t _ALIGN(64) endiandata[20];
+#else
 	uint32_t hash[8] __attribute__ ((aligned (64))); 
 	uint32_t endiandata[20] __attribute__ ((aligned (64)));
+#endif
 	uint32_t *pdata = work->data;
 	uint32_t *ptarget = work->target;
 	const uint32_t Htarg = ptarget[7];
@@ -34,7 +39,7 @@ int scanhash_lyra2z330( int thr_id, struct work *work, uint32_t max_nonce,
 
 	do {
 		be32enc(&endiandata[19], nonce);
-		lyra2z330_hash( hash, endiandata, work->height );
+		lyra2z330_hash( hash, endiandata);
 
 		if (hash[7] <= Htarg && fulltest(hash, ptarget)) {
 			work_set_target_ratio(work, hash);

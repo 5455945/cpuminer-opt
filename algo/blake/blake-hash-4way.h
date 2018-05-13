@@ -57,7 +57,11 @@ extern "C"{
 // Blake-256 4 way
 
 typedef struct {
-   __m128i buf[16] __attribute__ ((aligned (64)));
+#ifdef _MSC_VER
+    __m128i _CRT_ALIGN(64) buf[16];
+#else
+    __m128i buf[16] __attribute__ ((aligned (64)));
+#endif
    __m128i H[8];
    __m128i S[4];    
    size_t ptr;
@@ -88,7 +92,11 @@ void blake256r8_4way_close(void *cc, void *dst);
 // Blake-256 8 way
 
 typedef struct {
-   __m256i buf[16] __attribute__ ((aligned (64)));
+#ifdef _MSC_VER
+	__m256i _CRT_ALIGN(64) buf[16];
+#else
+	__m256i buf[16] __attribute__((aligned(64)));
+#endif
    __m256i H[8];
    __m256i S[4];
    size_t ptr;
@@ -117,7 +125,11 @@ void blake256r8_8way_close(void *cc, void *dst);
 // Blake-512 4 way
 
 typedef struct {
-   __m256i buf[16] __attribute__ ((aligned (64)));
+#ifdef _MSC_VER
+	__m256i _CRT_ALIGN(64) buf[16];
+#else
+	__m256i buf[16] __attribute__((aligned(64)));
+#endif
    __m256i H[8];
    __m256i S[4];   
    size_t ptr;

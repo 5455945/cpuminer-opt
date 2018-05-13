@@ -82,6 +82,18 @@
     <ClCompile Include="algo\sha\sha2.c">
       <Filter>algo</Filter>
     </ClCompile>
+    <ClCompile Include="algo\lyra2\lyra2z-4way.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\lyra2\lyra2z330.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\blake\blake-hash-4way.c">
+      <Filter>algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\blake\blake-4way.c">
+      <Filter>algo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="compat.h">
@@ -137,6 +149,9 @@
     </ClInclude>
     <ClInclude Include="algo-gate-api.h" />
     <ClInclude Include="algo\lyra2\lyra2z-gate.h">
+      <Filter>algo</Filter>
+    </ClInclude>
+    <ClInclude Include="algo\lyra2\allium-gate.h">
       <Filter>algo</Filter>
     </ClInclude>
   </ItemGroup>
