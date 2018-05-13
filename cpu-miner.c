@@ -184,7 +184,7 @@ static void   workio_cmd_free(struct workio_cmd *wc);
 #ifdef __linux /* Linux specific policy and affinity management */
 #include <sched.h>
 
-static inline void drop_policy(void)
+static __inline void drop_policy(void)
 {
 	struct sched_param param;
 	param.sched_priority = 0;
@@ -232,7 +232,7 @@ static void affine_to_cpu_mask( int id, unsigned long long mask )
 }
 
 #elif defined(WIN32) /* Windows */
-static inline void drop_policy(void) { }
+static __inline void drop_policy(void) { }
 static void affine_to_cpu_mask(int id, unsigned long mask) {
 	if (id == -1)
 		SetProcessAffinityMask(GetCurrentProcess(), mask);
@@ -240,7 +240,7 @@ static void affine_to_cpu_mask(int id, unsigned long mask) {
 		SetThreadAffinityMask(GetCurrentThread(), mask);
 }
 #else
-static inline void drop_policy(void) { }
+static __inline void drop_policy(void) { }
 static void affine_to_cpu_mask(int id, unsigned long mask) { }
 #endif
 

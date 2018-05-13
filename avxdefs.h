@@ -41,11 +41,11 @@
 //
 // size: size of element if applicable, ommitted otherwise.
 // 
-// Macros vs inline functions.
+// Macros vs __inline functions.
 //
 // Macros are used for statement functions.
 // Macros are used when updating multiple arguments.
-// Inline functions are used when multiple statements or local variables are
+// __inline functions are used when multiple statements or local variables are
 // needed.
 
 #include <inttypes.h>
@@ -141,7 +141,7 @@ static const m128_v8 yyy_ = mm_setc1_8( 3 );
 
 static const m128_v64 zzz_[] = { c128_zero, c128_zero };
 #define zzz ((const __m128i*)zzz_)
-static inline __m128i foo()
+static __inline __m128i foo()
 {
  m128_v64 x = mm_setc_64( 1, 2 );
  return  _mm_add_epi32( _mm_add_epi32( zzz[0], x.m128i ), yyy );
@@ -205,25 +205,25 @@ static inline __m128i foo()
 // Memory functions
 // n = number of __m128i, bytes/16
 
-static inline void memset_zero_128( __m128i *dst,  int n )
+static __inline void memset_zero_128( __m128i *dst,  int n )
 {   for ( int i = 0; i < n; i++ ) dst[i] = m128_zero; }
 
-static inline void memset_128( __m128i *dst, const __m128i a,  int n )
+static __inline void memset_128( __m128i *dst, const __m128i a,  int n )
 {   for ( int i = 0; i < n; i++ ) dst[i] = a; }
 
-static inline void memcpy_128( __m128i *dst, const __m128i *src, int n )
+static __inline void memcpy_128( __m128i *dst, const __m128i *src, int n )
 {   for ( int i = 0; i < n; i ++ ) dst[i] = src[i]; }
 
 // A couple of 64 bit scalar functions
 // n = bytes/8
 
-static inline void memcpy_64( uint64_t *dst, const uint64_t *src, int n )
+static __inline void memcpy_64( uint64_t *dst, const uint64_t *src, int n )
 {   for ( int i = 0; i < n; i++ ) dst[i] = src[i]; }
 
-static inline void memset_zero_64( uint64_t *src, int n )
+static __inline void memset_zero_64( uint64_t *src, int n )
 {   for ( int i = 0; i < n; i++ ) src[i] = 0; }
 
-static inline void memset_64( uint64_t *dst, uint64_t a,  int n )
+static __inline void memset_64( uint64_t *dst, uint64_t a,  int n )
 {   for ( int i = 0; i < n; i++ ) dst[i] = a; }
 
 
@@ -543,21 +543,21 @@ do { \
 
 #else  // SSE2
 
-static inline __m128i mm_bswap_64( __m128i v )
+static __inline __m128i mm_bswap_64( __m128i v )
 {
       v = _mm_or_si128( _mm_slli_epi16( v, 8 ), _mm_srli_epi16( v, 8 ) );
       v = _mm_shufflelo_epi16( v, _MM_SHUFFLE( 0, 1, 2, 3 ) );
   return  _mm_shufflehi_epi16( v, _MM_SHUFFLE( 0, 1, 2, 3 ) );
 }
 
-static inline __m128i mm_bswap_32( __m128i v )
+static __inline __m128i mm_bswap_32( __m128i v )
 {
       v = _mm_or_si128( _mm_slli_epi16( v, 8 ), _mm_srli_epi16( v, 8 ) );
       v = _mm_shufflelo_epi16( v, _MM_SHUFFLE( 2, 3, 0, 1 ) );
   return  _mm_shufflehi_epi16( v, _MM_SHUFFLE( 2, 3, 0, 1 ) );
 }
 
-static inline __m128i mm_bswap_16( __m128i v )
+static __inline __m128i mm_bswap_16( __m128i v )
 {
   return _mm_or_si128( _mm_slli_epi16( v, 8 ), _mm_srli_epi16( v, 8 ) );
 }
@@ -700,13 +700,13 @@ typedef union m256_v8 m256_v8;
 // Memory functions
 // n = number of 256 bit (32 byte) vectors
 
-static inline void memset_zero_256( __m256i *dst, int n )
+static __inline void memset_zero_256( __m256i *dst, int n )
 {   for ( int i = 0; i < n; i++ ) dst[i] = m256_zero; }
 
-static inline void memset_256( __m256i *dst, const __m256i a,  int n )
+static __inline void memset_256( __m256i *dst, const __m256i a,  int n )
 {   for ( int i = 0; i < n; i++ ) dst[i] = a; }
 
-static inline void memcpy_256( __m256i *dst, const __m256i *src, int n )
+static __inline void memcpy_256( __m256i *dst, const __m256i *src, int n )
 {   for ( int i = 0; i < n; i ++ ) dst[i] = src[i]; }
 
 
@@ -961,7 +961,7 @@ do { \
 // Windows has problems with __m256i args passed by value.
 // Use pointers to facilitate __m256i to __m128i conversion.
 // When key is used switching keys may reduce performance.
-inline __m256i mm256_aesenc_2x128( void *msg, void *key )
+__inline __m256i mm256_aesenc_2x128( void *msg, void *key )
 {
    ((__m128i*)msg)[0] = _mm_aesenc_si128( ((__m128i*)msg)[0],
                                           ((__m128i*)key)[0] );
@@ -969,7 +969,7 @@ inline __m256i mm256_aesenc_2x128( void *msg, void *key )
                                           ((__m128i*)key)[1] );
 }
 
-inline __m256i mm256_aesenc_nokey_2x128( void *msg )
+__inline __m256i mm256_aesenc_nokey_2x128( void *msg )
 {
    ((__m128i*)msg)[0] = _mm_aesenc_si128( ((__m128i*)msg)[0], m128_zero );
    ((__m128i*)msg)[1] = _mm_aesenc_si128( ((__m128i*)msg)[1], m128_zero );
@@ -977,7 +977,7 @@ inline __m256i mm256_aesenc_nokey_2x128( void *msg )
 
 // source msg preserved
 /*
-inline __m256i mm256_aesenc_2x128( void *out, void *msg, void *key )
+__inline __m256i mm256_aesenc_2x128( void *out, void *msg, void *key )
 {
    ((__m128i*)out)[0] = _mm_aesenc_si128( ((__m128i*)msg)[0],
                                           ((__m128i*)key)[0] );
@@ -985,14 +985,14 @@ inline __m256i mm256_aesenc_2x128( void *out, void *msg, void *key )
                                           ((__m128i*)key)[1] );
 }
 
-inline __m256i mm256_aesenc_nokey_2x128( void *out, void *msg )
+__inline __m256i mm256_aesenc_nokey_2x128( void *out, void *msg )
 {
    ((__m128i*)out)[0] = _mm_aesenc_si128( ((__m128i*)msg)[0], m128_zero );
    ((__m128i*)out)[1] = _mm_aesenc_si128( ((__m128i*)msg)[1], m128_zero );
 }
 */
 
-inline __m256i mm256_aesenc_2x128_obs( __m256i x, __m256i k )
+__inline __m256i mm256_aesenc_2x128_obs( __m256i x, __m256i k )
 {
     __m128i hi, lo, khi, klo;
 
@@ -1003,7 +1003,7 @@ inline __m256i mm256_aesenc_2x128_obs( __m256i x, __m256i k )
     return mm256_pack_2x128( hi, lo );
 }
 
-inline __m256i mm256_aesenc_nokey_2x128_obs( __m256i x )
+__inline __m256i mm256_aesenc_nokey_2x128_obs( __m256i x )
 {
     __m128i hi, lo;
 

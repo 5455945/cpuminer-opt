@@ -110,12 +110,12 @@ int cpu_fanpercent()
 }
 
 #ifndef __arm__
-static inline void cpuid(int functionnumber, int output[4]) {
+static __inline void cpuid(int functionnumber, int output[4]) {
 #if defined (_MSC_VER) || defined (__INTEL_COMPILER)
 	// Microsoft or Intel compiler, intrin.h included
 	__cpuidex(output, functionnumber, 0);
 #elif defined(__GNUC__) || defined(__clang__)
-	// use inline assembly, Gnu/AT&T syntax
+	// use __inline assembly, Gnu/AT&T syntax
 	int a, b, c, d;
 	asm volatile("cpuid" : "=a"(a), "=b"(b), "=c"(c), "=d"(d) : "a"(functionnumber), "c"(0));
 	output[0] = a;
@@ -123,7 +123,7 @@ static inline void cpuid(int functionnumber, int output[4]) {
 	output[2] = c;
 	output[3] = d;
 #else
-	// unknown platform. try inline assembly with masm/intel syntax
+	// unknown platform. try __inline assembly with masm/intel syntax
 	__asm {
 		mov eax, functionnumber
 		xor ecx, ecx
@@ -282,7 +282,7 @@ void cpu_getmodelid(char *outbuf, size_t maxsz)
 #define FMA3_mask     (FMA3_Flag|AVX1_mask)
 
 
-static inline bool has_sha_()
+static __inline bool has_sha_()
 {
 #ifdef __arm__
     return false;
@@ -296,7 +296,7 @@ static inline bool has_sha_()
 bool has_sha() { return has_sha_(); }
 
 
-static inline bool has_sse2_()
+static __inline bool has_sse2_()
 {
 #ifdef __arm__
     return false;
@@ -310,7 +310,7 @@ static inline bool has_sse2_()
 bool has_sse2() { return has_sse2_(); } 
 
 // nehalem and above, no AVX1 on nehalem
-static inline bool has_aes_ni_()
+static __inline bool has_aes_ni_()
 {
 #ifdef __arm__
 	return false;
@@ -324,7 +324,7 @@ static inline bool has_aes_ni_()
 bool has_aes_ni() { return has_aes_ni_(); }
 
 // westmere and above
-static inline bool has_avx1_()
+static __inline bool has_avx1_()
 {
 #ifdef __arm__
         return false;
@@ -338,7 +338,7 @@ static inline bool has_avx1_()
 bool has_avx1() { return has_avx1_(); }
 
 // haswell and above
-static inline bool has_avx2_()
+static __inline bool has_avx2_()
 {
 #ifdef __arm__
     return false;
@@ -351,7 +351,7 @@ static inline bool has_avx2_()
 
 bool has_avx2() { return has_avx2_(); }
 
-static inline bool has_avx512f_()
+static __inline bool has_avx512f_()
 {
 #ifdef __arm__
     return false;
@@ -366,7 +366,7 @@ bool has_avx512f() { return has_avx512f_(); }
 
 
 // AMD only
-static inline bool has_xop_()
+static __inline bool has_xop_()
 {
 #ifdef __arm__
         return false;
@@ -379,7 +379,7 @@ static inline bool has_xop_()
 
 bool has_xop() { return has_xop_(); }
 
-static inline bool has_fma3_()
+static __inline bool has_fma3_()
 {
 #ifdef __arm__
         return false;
@@ -392,7 +392,7 @@ static inline bool has_fma3_()
 
 bool has_fma3() { return has_fma3_(); }
 
-static inline bool has_sse42_()
+static __inline bool has_sse42_()
 {
 #ifdef __arm__
         return false;
@@ -405,7 +405,7 @@ static inline bool has_sse42_()
 
 bool has_sse42() { return has_sse42_(); }
 
-static inline bool has_sse_()
+static __inline bool has_sse_()
 {
 #ifdef __arm__
         return false;

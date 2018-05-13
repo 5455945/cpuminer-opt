@@ -21,7 +21,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <mm_malloc.h>
 #include "compat.h"
 #include "lyra2.h"
 #include "sponge.h"

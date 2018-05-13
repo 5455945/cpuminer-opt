@@ -1,5 +1,4 @@
 #include <memory.h>
-#include <mm_malloc.h>
 #include "lyra2z-gate.h"
 #include "lyra2.h"
 #include "algo/blake/sph_blake.h"
@@ -32,10 +31,10 @@ void lyra2z_hash( void *state, const void *input )
 {
         uint32_t _ALIGN(64) hash[16];
 
-        sph_blake256_context ctx_blake __attribute__ ((aligned (64)));
+        sph_blake256_context _ALIGN(64) ctx_blake;
 
         memcpy( &ctx_blake, &lyra2z_blake_mid, sizeof lyra2z_blake_mid );
-        sph_blake256( &ctx_blake, input + 64, 16 );
+        sph_blake256( &ctx_blake, (void *)((char *)input + 64), 16 );
         sph_blake256_close( &ctx_blake, hash );
 
         LYRA2Z( lyra2z_matrix, hash, 32, hash, 32, hash, 32, 8, 8, 8);

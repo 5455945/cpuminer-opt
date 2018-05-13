@@ -157,7 +157,7 @@ bool register_algo_gate( int algo, algo_gate_t *gate )
 
    switch (algo)
    {
-     case ALGO_ALLIUM:       register_allium_algo       ( gate ); break;
+     /*case ALGO_ALLIUM:       register_allium_algo       ( gate ); break;
      case ALGO_ANIME:        register_anime_algo        ( gate ); break;
      case ALGO_ARGON2:       register_argon2_algo       ( gate ); break;
      case ALGO_ARGON2D250:   register_argon2d_crds_algo ( gate ); break;
@@ -189,9 +189,9 @@ bool register_algo_gate( int algo, algo_gate_t *gate )
      case ALGO_LUFFA:        register_luffa_algo        ( gate ); break;
      case ALGO_LYRA2H:       register_lyra2h_algo       ( gate ); break;
      case ALGO_LYRA2RE:      register_lyra2re_algo      ( gate ); break;
-     case ALGO_LYRA2REV2:    register_lyra2rev2_algo    ( gate ); break;
+     case ALGO_LYRA2REV2:    register_lyra2rev2_algo    ( gate ); break;*/
      case ALGO_LYRA2Z:       register_lyra2z_algo       ( gate ); break;
-     case ALGO_LYRA2Z330:    register_lyra2z330_algo    ( gate ); break;
+     /*case ALGO_LYRA2Z330:    register_lyra2z330_algo    ( gate ); break;
      case ALGO_M7M:          register_m7m_algo          ( gate ); break;
      case ALGO_MYR_GR:       register_myriad_algo       ( gate ); break;
      case ALGO_NEOSCRYPT:    register_neoscrypt_algo    ( gate ); break;
@@ -233,7 +233,7 @@ bool register_algo_gate( int algo, algo_gate_t *gate )
      case ALGO_YESCRYPTR8:   register_yescryptr8_algo   ( gate ); break;
      case ALGO_YESCRYPTR16:  register_yescryptr16_algo  ( gate ); break;
      case ALGO_YESCRYPTR32:  register_yescryptr32_algo  ( gate ); break;
-     case ALGO_ZR5:          register_zr5_algo          ( gate ); break;
+     case ALGO_ZR5:          register_zr5_algo          ( gate ); break;*/
     default:
         applog(LOG_ERR,"FAIL: algo_gate registration failed, unknown algo %s.\n", algo_names[opt_algo] );
         return false;

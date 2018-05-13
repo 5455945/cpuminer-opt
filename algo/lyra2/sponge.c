@@ -38,7 +38,7 @@
  *
  * @param state         The 1024-bit array to be initialized
  */
-inline void initState( uint64_t State[/*16*/] )
+void initState( uint64_t State[/*16*/] )
 {
 #if defined (__AVX2__)
 
@@ -84,7 +84,7 @@ inline void initState( uint64_t State[/*16*/] )
  *
  * @param v     A 1024-bit (16 uint64_t) array to be processed by Blake2b's G function
  */
-inline static void blake2bLyra( uint64_t *v )
+__inline static void blake2bLyra( uint64_t *v )
 {
     ROUND_LYRA(0);
     ROUND_LYRA(1);
@@ -104,7 +104,7 @@ inline static void blake2bLyra( uint64_t *v )
  * Executes a reduced version of Blake2b's G function with only one round
  * @param v     A 1024-bit (16 uint64_t) array to be processed by Blake2b's G function
  */
-inline static void reducedBlake2bLyra( uint64_t *v )
+__inline static void reducedBlake2bLyra( uint64_t *v )
 {
     ROUND_LYRA(0);
 }
@@ -117,7 +117,7 @@ inline static void reducedBlake2bLyra( uint64_t *v )
  * @param out        Array that will receive the data squeezed
  * @param len        The number of bytes to be squeezed into the "out" array
  */
-inline void squeeze( uint64_t *State, byte *Out, unsigned int len )
+void squeeze( uint64_t *State, byte *Out, unsigned int len )
 {
 #if defined (__AVX2__)
 
@@ -182,7 +182,7 @@ inline void squeeze( uint64_t *State, byte *Out, unsigned int len )
  * @param state The current state of the sponge
  * @param in    The block to be absorbed (BLOCK_LEN_INT64 words)
  */
-inline void absorbBlock( uint64_t *State, const uint64_t *In ) 
+void absorbBlock( uint64_t *State, const uint64_t *In ) 
 {
 #if defined (__AVX2__)
 
@@ -250,7 +250,7 @@ inline void absorbBlock( uint64_t *State, const uint64_t *In )
  * @param state The current state of the sponge
  * @param in    The block to be absorbed (BLOCK_LEN_BLAKE2_SAFE_INT64 words)
  */
-inline void absorbBlockBlake2Safe( uint64_t *State, const uint64_t *In )
+void absorbBlockBlake2Safe( uint64_t *State, const uint64_t *In )
 {
     //XORs the first BLOCK_LEN_BLAKE2_SAFE_INT64 words of "in" with the current state
 #if defined (__AVX2__)
@@ -312,7 +312,7 @@ inline void absorbBlockBlake2Safe( uint64_t *State, const uint64_t *In )
  * @param state     The current state of the sponge
  * @param rowOut    Row to receive the data squeezed
  */
-inline void reducedSqueezeRow0( uint64_t* State, uint64_t* rowOut,
+void reducedSqueezeRow0( uint64_t* State, uint64_t* rowOut,
                                 uint64_t nCols )
 {
     int i;
@@ -441,7 +441,7 @@ inline void reducedSqueezeRow0( uint64_t* State, uint64_t* rowOut,
  * @param rowIn		Row to feed the sponge
  * @param rowOut	Row to receive the sponge's output
  */
-inline void reducedDuplexRow1( uint64_t *State, uint64_t *rowIn,
+void reducedDuplexRow1( uint64_t *State, uint64_t *rowIn,
                                uint64_t *rowOut, uint64_t nCols )
 {
     int i;
@@ -619,7 +619,7 @@ inline void reducedDuplexRow1( uint64_t *State, uint64_t *rowIn,
  * @param rowOut         Row receiving the output
  *
  */
-inline void reducedDuplexRowSetup( uint64_t *State, uint64_t *rowIn,
+void reducedDuplexRowSetup( uint64_t *State, uint64_t *rowIn,
                                    uint64_t *rowInOut, uint64_t *rowOut,
                                    uint64_t nCols )
 {
@@ -853,7 +853,7 @@ inline void reducedDuplexRowSetup( uint64_t *State, uint64_t *rowIn,
  *
  */
 
-inline void reducedDuplexRow( uint64_t *State, uint64_t *rowIn,
+void reducedDuplexRow( uint64_t *State, uint64_t *rowIn,
                               uint64_t *rowInOut, uint64_t *rowOut,
                               uint64_t nCols )
 {
