@@ -179,10 +179,10 @@ void lyra2z_8way_hash( void *state, const void *input )
      memcpy((char*)state + 32, hash1, 32);
      memcpy((char*)state + 64, hash2, 32);
      memcpy((char*)state + 96, hash3, 32);
-     memcpy((char*)state + 128, hash1, 32);
-     memcpy((char*)state + 160, hash2, 32);
-     memcpy((char*)state + 192, hash3, 32);
-     memcpy((char*)state + 224, hash1, 32);
+     memcpy((char*)state + 128, hash4, 32);
+     memcpy((char*)state + 160, hash5, 32);
+     memcpy((char*)state + 192, hash6, 32);
+     memcpy((char*)state + 224, hash7, 32);
 }
 
 int scanhash_lyra2z_8way( int thr_id, struct work *work, uint32_t max_nonce,
@@ -204,6 +204,7 @@ int scanhash_lyra2z_8way( int thr_id, struct work *work, uint32_t max_nonce,
    uint32_t *nonces = work->nonces;
    int num_found = 0;
    uint32_t *noncep = vdata + 152; // 19*8
+   memset(hash, 0, sizeof(hash));
 
    if ( opt_benchmark )
       ptarget[7] = 0x0000ff;

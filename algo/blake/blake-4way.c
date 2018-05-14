@@ -84,21 +84,31 @@ blake256r14_8way_context blake_8w_ctx;
 
 void blakehash_8way( void *state, const void *input )
 {
-     uint32_t vhash[8*8] __attribute__ ((aligned (64)));
-     blake256r14_8way_context ctx;
+#ifdef _MSC_VER
+    uint32_t _ALIGN(64) vhash[8 * 8];
+#else
+    uint32_t vhash[8 * 8] __attribute__((aligned(64)));
+    blake256r14_8way_context ctx
+#endif
+    blake256r14_8way_context ctx;
      memcpy( &ctx, &blake_8w_ctx, sizeof ctx );
-     blake256r14_8way( &ctx, input + (64<<3), 16 );
+     blake256r14_8way( &ctx, (char*)input + (64<<3), 16 );
      blake256r14_8way_close( &ctx, vhash );
-     mm256_deinterleave_8x32( state,     state+ 32, state+ 64, state+ 96,
-                              state+128, state+160, state+192, state+224,
+     mm256_deinterleave_8x32(state, (char*)state + 32, (char*)state + 64, (char*)state + 96,
+         (char*)state + 128, (char*)state + 160, (char*)state + 192, (char*)state + 224,
                               vhash, 256 );
 }
 
 int scanhash_blake_8way( int thr_id, struct work *work, uint32_t max_nonce,
                          uint64_t *hashes_done )
 {
-   uint32_t vdata[20*8] __attribute__ ((aligned (64)));
-   uint32_t hash[8*8] __attribute__ ((aligned (32)));
+#ifdef _MSC_VER
+    uint32_t _ALIGN(64) vdata[20 * 8];
+    uint32_t _ALIGN(64) hash[8 * 8];
+#else
+    uint32_t vdata[20 * 8] __attribute__((aligned(64)));
+    uint32_t hash[8 * 8] __attribute__((aligned(32)));
+#endif
    uint32_t *pdata = work->data;
    uint32_t *ptarget = work->target;
    const uint32_t first_nonce = pdata[19];

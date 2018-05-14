@@ -1863,7 +1863,7 @@ static void *miner_thread( void *userdata )
        if (!wanna_mine(thr_id))
        {
           sleep(5);
-	  continue;
+          continue;
        }
        // adjust max_nonce to meet target scan time
        if (have_stratum)
@@ -1936,6 +1936,7 @@ static void *miner_thread( void *userdata )
           for ( int n = 0; n < nonce_found; n++ )
           {
              *algo_gate.get_nonceptr( work.data ) = work.nonces[n];
+             applog(LOG_NOTICE, "###01 nonces[%d] = %X", n, work.nonces[n]);
              if ( submit_work( mythr, &work ) )
                 applog( LOG_NOTICE, "Share submitted." );
              else
@@ -1946,7 +1947,6 @@ static void *miner_thread( void *userdata )
           }
           else
           {  // only 1 nonce, in work ready to submit.
-
              if ( !submit_work( mythr, &work ) )
              {
                 applog( LOG_WARNING, "Failed to submit share." );

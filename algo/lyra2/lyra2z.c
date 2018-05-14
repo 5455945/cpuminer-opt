@@ -34,7 +34,7 @@ void lyra2z_hash( void *state, const void *input )
         sph_blake256_context _ALIGN(64) ctx_blake;
 
         memcpy( &ctx_blake, &lyra2z_blake_mid, sizeof lyra2z_blake_mid );
-        sph_blake256( &ctx_blake, (void *)((char *)input + 64), 16 );
+        sph_blake256( &ctx_blake, (char *)input + 64, 16 );
         sph_blake256_close( &ctx_blake, hash );
 
         LYRA2Z( lyra2z_matrix, hash, 32, hash, 32, hash, 32, 8, 8, 8);

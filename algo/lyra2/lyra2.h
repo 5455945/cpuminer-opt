@@ -46,9 +46,9 @@ int LYRA2RE( void *K, uint64_t kLen, const void *pwd,
              uint64_t timeCost, uint64_t nRows, uint64_t nCols );
 
 
-int LYRA2REV2( uint64_t*, void *K, uint64_t kLen, const void *pwd,
-               uint64_t pwdlen, const void *salt, uint64_t saltlen,
-               uint64_t timeCost, uint64_t nRows, uint64_t nCols );
+int LYRA2REV2(uint64_t* wholeMatrix, void *K, uint64_t kLen, const void *pwd,
+    const uint64_t pwdlen, const void *salt, const uint64_t saltlen,
+    const uint64_t timeCost, const uint64_t nRows, const uint64_t nCols);
 
 int LYRA2Z( uint64_t*, void *K, uint64_t kLen, const void *pwd,
             uint64_t pwdlen, const void *salt, uint64_t saltlen,
