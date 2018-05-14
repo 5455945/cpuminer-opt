@@ -285,10 +285,17 @@ static inline void mm256_deinterleave_4x64( void *dst0, void *dst1, void *dst2,
    if ( bit_len <= 640 )
    {
       // null change to overrun area
+    #ifdef _MSC_VER
        d0[2] = _mm256_set_epi64x(d0[2].m256i_i64[3], d0[2].m256i_i64[2], s[36], s[32]);
        d1[2] = _mm256_set_epi64x(d1[2].m256i_i64[3], d1[2].m256i_i64[2], s[37], s[33]);
        d2[2] = _mm256_set_epi64x(d2[2].m256i_i64[3], d2[2].m256i_i64[2], s[38], s[34]);
        d3[2] = _mm256_set_epi64x(d3[2].m256i_i64[3], d3[2].m256i_i64[2], s[39], s[35]);
+    #else
+       d0[2] = _mm256_set_epi64x(d0[2][3], d0[2][2], s[36], s[32]);
+       d1[2] = _mm256_set_epi64x(d1[2][3], d1[2][2], s[37], s[33]);
+       d2[2] = _mm256_set_epi64x(d2[2][3], d2[2][2], s[38], s[34]);
+       d3[2] = _mm256_set_epi64x(d3[2][3], d3[2][2], s[39], s[35]);
+    #endif
       return;
    }
 
@@ -755,8 +762,13 @@ static inline void mm256_deinterleave_2x128( void *dst0, void *dst1, void *src,
 
    if ( bit_len <= 640 )
    {
+   #ifdef _MSC_VER
        d0[2] = _mm256_set_epi64x(d0[2].m256i_i64[3], d0[2].m256i_i64[2], s[17], s[16]);
        d1[2] = _mm256_set_epi64x(d1[2].m256i_i64[3], d1[2].m256i_i64[2], s[19], s[18]);
+   #else
+       d0[2] = _mm256_set_epi64x(d0[2][3], d0[2][2], s[17], s[16]);
+       d1[2] = _mm256_set_epi64x(d1[2][3], d1[2][2], s[19], s[18]);
+   #endif
       return;
    }
 
